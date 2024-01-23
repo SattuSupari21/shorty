@@ -1,14 +1,14 @@
-import { Elysia } from "elysia";
-import urlRoutes from "./routes/urls";
+import {Elysia} from "elysia";
 import userRoutes from "./routes/users";
+import urlRoutes from "./routes/urls";
 import swagger from "@elysiajs/swagger";
 
 const app = new Elysia()
 
 app
     .use(swagger())
-    .group('/api', (app) => app.use(urlRoutes))
     .group('/api', (app) => app.use(userRoutes))
+    .group('/api', (app) => app.use(urlRoutes))
     .listen(process.env.PORT || 3049)
 
 console.log(
