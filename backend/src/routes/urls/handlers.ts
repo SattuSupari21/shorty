@@ -9,20 +9,22 @@ export async function getUrl() {
 }
 
 // @ts-ignore
-export async function createUrl(options: {longUrl: string, userId: number}, jwt, set, auth) {
+export async function createUrl(options: {longUrl: string}, jwt, set, auth) {
     try {
         const profile = await jwt.verify(auth)
         if (!profile) {
             set.status = 401
             return 'Unauthorized'
         }
-        const {longUrl, userId} = options;
-        return await db.url.create({
+        const {longUrl} = options;
+        const res = await db.url.create({
             data: {
                 longUrl,
-                userId
+                userId: profile.id,
             }
         })
+        const {shortUrl} = res;
+        return Response.json({ status: 'success', shortUrl});
     } catch (e) {
         console.log(`Error creating url : ${e}`)
     }

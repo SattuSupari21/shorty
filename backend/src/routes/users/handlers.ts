@@ -11,7 +11,11 @@ export async function getAllUsers() {
 
 export async function getUser(options: { email: string, password: string }, jwt: {
     sign: (arg0: any) => any;
-} | undefined, cookie: (Record<string, Cookie<any>> & Record<string, string>) | undefined, setCookie: ((arg0: string, arg1: any, arg2: { httpOnly: boolean; maxAge: number; }) => void) | undefined) {
+} | undefined, cookie: (Record<string, Cookie<any>> & Record<string, string>) | undefined, setCookie: ((arg0: string, arg1: any, arg2: {
+    path: string;
+    maxAge: number;
+    httpOnly: boolean
+}) => void) | undefined) {
     try {
         const { email, password } = options;
         const user = await db.user.findUnique({
@@ -23,12 +27,13 @@ export async function getUser(options: { email: string, password: string }, jwt:
             const isPasswordMatch = await Bun.password.verify(password, user.password)
             if (isPasswordMatch) {
                 if (setCookie) {
-                    setCookie('auth', await jwt?.sign(user), {
+                    setCookie('auth', await jwt?.sign({id: user.id, name: user.name}), {
                         httpOnly: false,
+                        path: '/',
                         maxAge: 7 * 86400,
                     })
                 }
-                return `Sign in as ${cookie?.auth}`
+                return `${cookie?.auth}`
             } else {
                 return new Error("Invalid password")
             }

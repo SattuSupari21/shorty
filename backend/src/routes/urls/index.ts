@@ -9,11 +9,10 @@ const urlRoutes = new Elysia({prefix: '/url'})
         secret: 'super-secret'
     }))
     .use(cookie())
-    .get('/:shortUrl', () => getUrl())
-    .post('/', ({ body, jwt, set, cookie: {auth} }) => createUrl(body, jwt, set, auth), {
+    // .get('/:shortUrl', () => getUrl())
+    .post('/createUrl', ({ body, jwt, set, cookie: {auth} }) => createUrl(body, jwt, set, auth), {
         body: t.Object({
             longUrl: t.String(),
-            userId: t.Number()
         })
     })
 
