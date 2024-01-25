@@ -1,5 +1,5 @@
 import {Elysia, t} from "elysia";
-import {createUser, getAllUsers, getUser} from "./handlers";
+import {createUser, getUser, getUserData} from "./handlers";
 import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
@@ -9,7 +9,7 @@ const userRoutes = new Elysia({prefix: '/user'})
         secret: 'super-secret'
     }))
     .use(cookie())
-    .get('/', () => getAllUsers())
+    .get('/', ({ jwt, cookie: {auth} }) => getUserData(jwt, auth))
     .post('/login', ({ body, jwt, cookie, setCookie }) => getUser(body, jwt, cookie, setCookie), {
         body: t.Object({
             email: t.String(),

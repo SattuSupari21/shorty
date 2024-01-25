@@ -1,9 +1,11 @@
 import { Cookie } from "elysia";
 import db from "../../db";
 
-export async function getAllUsers() {
+// @ts-ignore
+export async function getUserData(jwt, auth) {
     try {
-        return await db.user.findMany();
+        const profile = await jwt.verify(auth)
+        if (profile)    return profile;
     } catch (e) {
         console.log(`${e}`)
     }
@@ -27,13 +29,13 @@ export async function getUser(options: { email: string, password: string }, jwt:
             const isPasswordMatch = await Bun.password.verify(password, user.password)
             if (isPasswordMatch) {
                 if (setCookie) {
-                    setCookie('auth', await jwt?.sign({id: user.id, name: user.name}), {
+                    setCookie('auth', await jwt?.sign({id: user.id, name: user.name, email: user.email}), {
                         httpOnly: false,
                         path: '/',
                         maxAge: 7 * 86400,
                     })
                 }
-                return `${cookie?.auth}`
+                return Response.json({ status: 'success', token: `${cookie?.auth}`, name: user.name, email: user.email})
             } else {
                 return new Error("Invalid password")
             }
@@ -55,13 +57,15 @@ export async function createUser(options: {name: string, email: string, password
             cost: 4, // number between 4-31
         });
 
-        return await db.user.create({
+        const user = await db.user.create({
             data: {
                 name,
                 email,
                 password: bcryptHash
             }
         })
+
+        return Response.json({ status: 'success', name: user.name, email: user.email})
     } catch (e) {
         console.log(`Error creating url : ${e}`)
     }

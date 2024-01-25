@@ -2,6 +2,7 @@
 
 import LoginPage from "@/app/auth/login/_components/login-page";
 import {Container} from "@radix-ui/themes";
+import {RecoilRoot} from "recoil";
 
 export default function Page() {
     return (

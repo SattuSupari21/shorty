@@ -1,23 +1,33 @@
-import {Button, Card, Flex, Heading, Link, Text, TextField} from "@radix-ui/themes";
+"use client"
+
+import {Box, Button, Card, Flex, Heading, Link, Text, TextField} from "@radix-ui/themes";
 import {InputIcon} from "@radix-ui/react-icons";
 import {useState} from "react";
 import {signupUser} from "@/app/actions";
+import {useSetRecoilState} from "recoil";
+import {userState} from "@/state/atoms/user";
 
 export default function SignupPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const setUserState = useSetRecoilState(userState);
 
     const handleSignup = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         const res = signupUser({name, email, password});
-        console.log(res);
+        res.then(function(result) {
+            setUserState({name: result.name, email: result.email})
+        })
     }
 
     return (
         <Card size={'2'}>
             <Flex direction={'column'} gap={'4'}>
-                <Heading align={'center'}>URL SHORTNER</Heading>
+                <Box className={'flex flex-col justify-center items-center'}>
+                    <Heading size={'8'}>SHORTY</Heading>
+                    <Text size={'2'}>A very simple url shortner</Text>
+                </Box>
                 <Flex direction={'column'} gap={'2'}>
                     <Text>Email</Text>
                     <TextField.Root>

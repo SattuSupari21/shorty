@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import '@radix-ui/themes/styles.css';
 import {Theme} from "@radix-ui/themes";
+import {RecoilRoot} from "recoil";
+import RecoilContextProvider from "@/state/atoms/user";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body><Theme appearance={'dark'}>{children}</Theme></body>
+    <body>
+      <Theme appearance={'dark'}>
+        <RecoilContextProvider>
+          {children}
+        </RecoilContextProvider>
+      </Theme>
+    </body>
     </html>
   );
 }

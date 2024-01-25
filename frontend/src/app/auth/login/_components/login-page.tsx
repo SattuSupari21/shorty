@@ -1,22 +1,38 @@
-import {Button, Card, Flex, Heading, Link, Text, TextField} from "@radix-ui/themes";
+"use client"
+
+import {Box, Button, Card, Flex, Heading, Link, Text, TextField} from "@radix-ui/themes";
 import {InputIcon} from "@radix-ui/react-icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {loginUser} from "@/app/actions";
+import {useRouter} from "next/navigation";
+import {userState} from "@/state/atoms/user";
+import {useRecoilState, useSetRecoilState} from "recoil";
 
 export default function LoginPage() {
+    const router = useRouter()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [user, setUser] = useRecoilState(userState);
 
     const handleLogin = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-        const res = await loginUser({email, password});
-        console.log(res)
+        // event.preventDefault();
+        let res = loginUser({email, password})
+        res.then(function(result) {
+            console.log(result)
+            if (result.status === 'success') {
+                setUser({name: result.name, email: result.email})
+                router.push('/')
+            }
+        })
     }
 
     return (
             <Card size={'2'}>
                 <Flex direction={'column'} gap={'4'}>
-                    <Heading align={'center'}>URL SHORTNER</Heading>
+                    <Box className={'flex flex-col justify-center items-center'}>
+                        <Heading size={'8'}>SHORTY</Heading>
+                        <Text size={'2'}>A very simple url shortner</Text>
+                    </Box>
                     <Flex direction={'column'} gap={'2'}>
                         <Text>Email</Text>
                         <TextField.Root>

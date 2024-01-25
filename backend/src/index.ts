@@ -3,6 +3,7 @@ import userRoutes from "./routes/users";
 import urlRoutes from "./routes/urls";
 import swagger from "@elysiajs/swagger";
 import cors from "@elysiajs/cors";
+import RedirectUser from "./redirectUser";
 
 const app = new Elysia()
 
@@ -10,6 +11,7 @@ app
     .use(swagger())
     .group('/api', (app) => app.use(userRoutes))
     .group('/api', (app) => app.use(urlRoutes))
+    .get('/:key',({params: {key}}) => RedirectUser(key))
     .use(cors({
         credentials: true
     }))
