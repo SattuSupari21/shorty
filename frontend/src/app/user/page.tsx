@@ -11,12 +11,8 @@ type Url = {
     shortUrl: string
 }
 
-export default function() {
-    const urls = useRecoilValue(urlState);
-
+function RenderTable(urls: Url[]) {
     return (
-        <div>
-            <Header />
             <Container size={'3'} p={'4'} mt={'6'}>
                 <Heading ml={'2'} mb={'4'}>Your Links,</Heading>
                 <Table.Root>
@@ -26,20 +22,28 @@ export default function() {
                             <Table.ColumnHeaderCell>Shorten URL</Table.ColumnHeaderCell>
                         </Table.Row>
                     </Table.Header>
-
-
-                    { urls ?
-                            <Table.Body>
-                                    {urls.map((url: Url) => (
-                                        <Table.Row key={url.id}>
-                                            <Table.RowHeaderCell>{url.longUrl}</Table.RowHeaderCell>
-                                            <Table.Cell><Link href={'http://localhost:3049/'+url.shortUrl}>http://localhost:3049/{url.shortUrl}</Link></Table.Cell>
-                                        </Table.Row>
-                                    ))}
-                            </Table.Body>
-                     : <div>No data found</div>}
+                    <Table.Body>
+                        {urls.map((url: Url) => (
+                            <Table.Row key={url.id}>
+                                <Table.RowHeaderCell>{url.longUrl}</Table.RowHeaderCell>
+                                <Table.Cell><Link href={'http://localhost:3049/'+url.shortUrl}>http://localhost:3049/{url.shortUrl}</Link></Table.Cell>
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
                 </Table.Root>
             </Container>
+    )
+}
+
+export default function() {
+    const urls = useRecoilValue(urlState);
+
+    return (
+        <div>
+            <Header />
+            { urls.length > 0 ? <div>{RenderTable(urls)}</div> : <div>
+                <Heading align={'center'} mt={'8'}>No data found</Heading>
+            </div>}
         </div>
     )
 }

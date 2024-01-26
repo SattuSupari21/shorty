@@ -30,10 +30,11 @@ export default function Header() {
                 <Heading><Link href={'/'} color={'purple'}>Shorty</Link></Heading>
                 {user.name ? (
                     <Flex align={'center'} gap={'4'}>
+                        <Text color={'purple'}>Hi, {user.name}</Text>
                         <Link href={"/user"}>My Account</Link>
-                        <Button onClick={logoutUser}>Log out</Button>
+                        <Button color="red" variant="outline" onClick={logoutUser}>Logout</Button>
                     </Flex>
-                ) : <Link href={"/auth/login"}>Log in</Link>}
+                ) : <Button color="green" variant="outline"><Link href={"/auth/login"}>Login</Link></Button>}
             </Flex>
         </div>
     )
