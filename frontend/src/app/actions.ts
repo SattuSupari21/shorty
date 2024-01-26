@@ -53,7 +53,8 @@ export async function loginUser({ email, password}: {email: string, password: st
 }
 
 export async function logoutUser() {
-    cookies().delete('auth')
+    cookies().set('auth', '')
+    return {status: 'success'}
 }
 
 export async function signupUser({ name, email, password}: {name: string, email: string, password: string}) {

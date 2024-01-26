@@ -23,4 +23,6 @@ const userRoutes = new Elysia({prefix: '/user'})
             password: t.String()
         })
     })
+    .get('/logout', ({ cookie, setCookie }) => {setCookie('auth', '', {httpOnly: false,
+        path: '/',})})
 export default  userRoutes;
