@@ -28,9 +28,18 @@ function getShortUrl(url: string) {
     }
 }
 
-export async function getUrl() {
+// @ts-ignore
+export async function getUserUrls(options: {id: number}, jwt, auth) {
     try {
-        return await db.url.findMany();
+        const profile = await jwt.verify(auth)
+        const { id } = options
+        if (profile) {
+            return await db.url.findMany({
+                where: {
+                    userId: id
+                }
+            })
+        }
     } catch (e) {
         console.log(`${e}`)
     }
@@ -57,13 +66,13 @@ export async function createUrl(options: {longUrl: string, key: string}, jwt, se
         } else {
             shortUrl = getShortUrl(longUrl);
         }
-        const res = await db.url.create({
-            data: {
-                shortUrl,
-                longUrl,
-                userId: profile.id,
-            }
-        })
+        // const res = await db.url.create({
+        //     data: {
+        //         shortUrl,
+        //         longUrl,
+        //         userId: profile.id,
+        //     }
+        // })
         return Response.json({ status: 'success', shortUrl: 'http://localhost:3049/' + shortUrl});
     } catch (e) {
         console.log(`Error creating url : ${e}`)

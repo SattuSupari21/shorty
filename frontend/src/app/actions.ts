@@ -14,6 +14,19 @@ export async function getUserData() {
     return data;
 }
 
+export async function getUserUrls(userId: number) {
+    const {data} = await axios.post('http://localhost:3049/api/url/getUserUrls', {
+            id: userId,
+        }, {
+            headers: {
+                Cookie: cookies().toString()
+            },
+            withCredentials: true,
+        }
+    )
+    return data;
+}
+
 export async function loginUser({ email, password}: {email: string, password: string}) {
     return await axios.post('http://localhost:3049/api/user/login', {
             email,
@@ -28,6 +41,10 @@ export async function loginUser({ email, password}: {email: string, password: st
         cookies().set('auth', res.data.token)
         return res.data;
     });
+}
+
+export async function logoutUser() {
+    cookies().delete('auth')
 }
 
 export async function signupUser({ name, email, password}: {name: string, email: string, password: string}) {

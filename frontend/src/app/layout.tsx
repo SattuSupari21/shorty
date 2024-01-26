@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import '@radix-ui/themes/styles.css';
 import {Theme} from "@radix-ui/themes";
-import {RecoilRoot} from "recoil";
-import RecoilContextProvider from "@/state/atoms/user";
+import RecoilContextProvider from "@/state/";
 
 export const metadata: Metadata = {
   title: "Create Next App",
