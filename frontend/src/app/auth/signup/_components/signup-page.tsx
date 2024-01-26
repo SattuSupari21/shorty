@@ -11,13 +11,17 @@ export default function SignupPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState([]);
     const setUserState = useSetRecoilState(userState);
 
     const handleSignup = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         const res = signupUser({name, email, password});
         res.then(function(result) {
-            setUserState({name: result.name, email: result.email})
+            if (result.status === 'error') {
+                setError(result.error);
+            }
+            setUserState({id: result.id, name: result.name, email: result.email})
         })
     }
 
@@ -55,6 +59,7 @@ export default function SignupPage() {
                         <TextField.Input type={'password'} placeholder="Enter new password..." onChange={(e) => setPassword(e.target.value)} />
                     </TextField.Root>
                 </Flex>
+                {error && error.map(err => <Text align={'center'} color={'red'}>{err}</Text>)}
                 <Button onClick={handleSignup}>Sign up</Button>
                 <Text align={'right'} size={'2'}>Already have an account? <Link href={"/auth/login"}>Log in</Link></Text>
             </Flex>

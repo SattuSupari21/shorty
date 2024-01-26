@@ -1,6 +1,6 @@
 import {Box, Button, Card, Container, Flex, Tabs, Text, TextField} from "@radix-ui/themes";
 import {Link1Icon} from "@radix-ui/react-icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {createShortUrl} from "@/app/actions";
 
 export default function MainBody() {
@@ -19,9 +19,15 @@ export default function MainBody() {
                 setError("You need to log in first.")
             } else if (result.status === 'failed') {
                 setError(result.message)
+            } else if (result.status === 'error') {
+                setError(result.error);
             }
         })
     }
+
+    useEffect(() => {
+        setError("")
+    }, [shortUrl])
 
     return (
         <Container className='px-16 flex items-center justify-center'>

@@ -12,16 +12,18 @@ export default function LoginPage() {
     const router = useRouter()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("")
     const [user, setUser] = useRecoilState(userState);
 
     const handleLogin = async (event: { preventDefault: () => void; }) => {
         // event.preventDefault();
         let res = loginUser({email, password})
         res.then(function(result) {
-            console.log(result)
             if (result.status === 'success') {
-                setUser({name: result.name, email: result.email})
+                setUser({id: result.id, name: result.name, email: result.email})
                 router.push('/')
+            } else if (result.status === 'error') {
+                setError(result.error);
             }
         })
     }
@@ -51,6 +53,7 @@ export default function LoginPage() {
                             <TextField.Input type={'password'} placeholder="Enter your password..." onChange={(e) => setPassword(e.target.value)} />
                         </TextField.Root>
                     </Flex>
+                    {error && <Text align={'center'} color={'red'}>{error}</Text>}
                     <Button type={'submit'} onClick={handleLogin}>Log in</Button>
                     <Text align={'right'} size={'2'}>Don't have an account? <Link href={"/auth/signup"}>Sign up</Link></Text>
                 </Flex>
