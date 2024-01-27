@@ -1,3 +1,5 @@
+## Shorty - A simple-to-use URL shortner
+___
 ##### 📋Features:
 - Create shortened URL/links against a long url
 - Create custom URLs with maximum character limit of 7
