@@ -2,7 +2,7 @@
 
 import {useRecoilState, useSetRecoilState} from "recoil";
 import {userState} from "@/state/atoms/user";
-import {AlertDialog, Button, Flex, Heading, Link, Text} from "@radix-ui/themes";
+import {AlertDialog, Button, Flex, Heading, Link} from "@radix-ui/themes";
 import {useEffect} from "react";
 import {getUserData, getUserUrls, logoutUser} from "@/app/actions";
 import {urlState} from "@/state/atoms/url";
@@ -30,11 +30,10 @@ export default function Header() {
 
     return (
         <div>
-            <Flex align={'center'} justify={'between'} mt={'2'} mx={'8'}>
+            <Flex align={'center'} justify={'between'} mt={'2'} mx={'6'}>
                 <Heading><Link href={'/'} color={'purple'}>Shorty</Link></Heading>
                 {user.name ? (
                     <Flex align={'center'} gap={'4'}>
-                        <Text color={'purple'}>Hi, {user.name}</Text>
                         <Link href={"/user"}>My Account</Link>
                         <AlertDialog.Root>
                             <AlertDialog.Trigger>
@@ -68,7 +67,7 @@ export default function Header() {
                             </AlertDialog.Content>
                         </AlertDialog.Root>
                     </Flex>
-                ) : <Button color="green" variant="outline"><Link href={"/auth/login"}>Login</Link></Button>}
+                ) : <Button className='cursor-pointer' variant="outline" onClick={() => router.push('/auth/login')}>Login</Button>}
             </Flex>
         </div>
     )

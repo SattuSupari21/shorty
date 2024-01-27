@@ -17,7 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
     <body>
-      <Theme appearance={'dark'}>
+      <Theme appearance={'dark'}
+             accentColor="mint"
+             grayColor="gray"
+             panelBackground="solid"
+             radius="large">
         <RecoilContextProvider>
           {children}
         </RecoilContextProvider>

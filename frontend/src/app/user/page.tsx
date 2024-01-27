@@ -4,6 +4,7 @@ import {Container, Heading, Link, Table, TableRoot} from "@radix-ui/themes";
 import Header from "@/app/_components/Header";
 import {useRecoilValue} from "recoil";
 import {urlState} from "@/state/atoms/url";
+import {userState} from "@/state/atoms/user";
 
 type Url = {
     id: number,
@@ -11,10 +12,13 @@ type Url = {
     shortUrl: string
 }
 
-function RenderTable(urls: Url[]) {
+function RenderTable(username: string, urls: Url[]) {
+
+
     return (
             <Container size={'3'} p={'4'} mt={'6'}>
-                <Heading ml={'2'} mb={'4'}>Your Links,</Heading>
+                <Heading ml={'2'} mb={'4'}>Hello {username}!</Heading>
+                <Heading ml={'2'} mb={'4'}>Here are your Links,</Heading>
                 <Table.Root>
                     <Table.Header>
                         <Table.Row>
@@ -37,12 +41,13 @@ function RenderTable(urls: Url[]) {
 
 export default function() {
     const urls = useRecoilValue(urlState);
+    const user = useRecoilValue(userState);
 
     return (
         <div>
             <Header />
-            { urls.length > 0 ? <div>{RenderTable(urls)}</div> : <div>
-                <Heading align={'center'} mt={'8'}>No data found</Heading>
+            { urls.length > 0 ? <div>{RenderTable(user.name, urls)}</div> : <div>
+                <Heading align={'center'} mt={'8'}>Sorry, no data found</Heading>
             </div>}
         </div>
     )
