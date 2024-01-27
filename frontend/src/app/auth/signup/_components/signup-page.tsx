@@ -6,8 +6,10 @@ import {useState} from "react";
 import {signupUser} from "@/app/actions";
 import {useSetRecoilState} from "recoil";
 import {userState} from "@/state/atoms/user";
+import {useRouter} from "next/navigation";
 
 export default function SignupPage() {
+    const router = useRouter();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,10 +20,11 @@ export default function SignupPage() {
         event.preventDefault();
         const res = signupUser({name, email, password});
         res.then(function(result) {
-            if (result.status === 'error') {
-                setError(result.error);
+            if (result.status === 'success') {
+                setUserState({id: result.id, name: result.name, email: result.email})
+                router.push('/')
             }
-            setUserState({id: result.id, name: result.name, email: result.email})
+            setError(result.error);
         })
     }
 

@@ -2,11 +2,11 @@
 
 import {Box, Button, Card, Flex, Heading, Link, Text, TextField} from "@radix-ui/themes";
 import {InputIcon} from "@radix-ui/react-icons";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {loginUser} from "@/app/actions";
 import {useRouter} from "next/navigation";
 import {userState} from "@/state/atoms/user";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState} from "recoil";
 
 export default function LoginPage() {
     const router = useRouter()
@@ -16,7 +16,7 @@ export default function LoginPage() {
     const [user, setUser] = useRecoilState(userState);
 
     const handleLogin = async (event: { preventDefault: () => void; }) => {
-        // event.preventDefault();
+        event.preventDefault();
         let res = loginUser({email, password})
         res.then(function(result) {
             if (result.status === 'success') {

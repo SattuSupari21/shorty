@@ -30,7 +30,7 @@ export default function MainBody() {
     }, [shortUrl])
 
     return (
-        <Container className='px-16 flex items-center justify-center'>
+        <Container className='px-16 md:p-8 flex items-center justify-center'>
             <Card size={'2'}>
                 <Tabs.Root defaultValue="url">
                     <Tabs.List className='flex justify-center'>

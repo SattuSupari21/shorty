@@ -16,7 +16,7 @@ const userRoutes = new Elysia({prefix: '/user'})
             password: t.String()
         })
     })
-    .post('/signup', ({ body }) => createUser(body), {
+    .post('/signup', ({ body, jwt }) => createUser(body, jwt), {
         body: t.Object({
             name: t.String(),
             email: t.String(),

@@ -30,7 +30,7 @@ export default function Header() {
 
     return (
         <div>
-            <Flex align={'center'} justify={'between'} m={'2'}>
+            <Flex align={'center'} justify={'between'} mt={'2'} mx={'8'}>
                 <Heading><Link href={'/'} color={'purple'}>Shorty</Link></Heading>
                 {user.name ? (
                     <Flex align={'center'} gap={'4'}>

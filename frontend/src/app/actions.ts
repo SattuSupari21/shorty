@@ -81,6 +81,9 @@ export async function signupUser({ name, email, password}: {name: string, email:
         withCredentials: true
         }
     )
+    if (data.status === 'success') {
+        cookies().set('auth', data.token)
+    }
     return data;
 }
 
