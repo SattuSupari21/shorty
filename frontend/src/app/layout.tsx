@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import '@radix-ui/themes/styles.css';
-import {Theme} from "@radix-ui/themes";
+import {Theme, ThemePanel} from "@radix-ui/themes";
 import RecoilContextProvider from "@/state/";
 
 export const metadata: Metadata = {
@@ -17,11 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
     <body>
-      <Theme appearance={'dark'}
-             accentColor="mint"
-             grayColor="gray"
-             panelBackground="solid"
-             radius="large">
+    <Theme appearance="dark" accentColor="sky" grayColor="mauve" panelBackground="solid" radius="large">
         <RecoilContextProvider>
           {children}
         </RecoilContextProvider>

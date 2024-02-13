@@ -54,7 +54,7 @@ export default function LoginPage() {
                         </TextField.Root>
                     </Flex>
                     {error && <Text align={'center'} color={'red'}>{error}</Text>}
-                    <Button type={'submit'} onClick={handleLogin}>Log in</Button>
+                    <Button onClick={handleLogin}>Log in</Button>
                     <Text align={'right'} size={'2'}>Don't have an account? <Link href={"/auth/signup"}>Sign up</Link></Text>
                 </Flex>
             </Card>

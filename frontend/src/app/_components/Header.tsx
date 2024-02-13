@@ -29,7 +29,7 @@ export default function Header() {
     }, [user.id]);
 
     return (
-        <div>
+        <div className="w-full max-w-[1024px]">
             <Flex align={'center'} justify={'between'} mt={'2'} mx={'6'}>
                 <Heading><Link href={'/'} color={'purple'}>Shorty</Link></Heading>
                 {user.name ? (
@@ -37,7 +37,7 @@ export default function Header() {
                         <Link href={"/user"}>My Account</Link>
                         <AlertDialog.Root>
                             <AlertDialog.Trigger>
-                                <Button color="red" variant={'surface'}>Logout</Button>
+                                <Button color="red" variant={"surface"} className="cursor-pointer">Logout</Button>
                             </AlertDialog.Trigger>
                             <AlertDialog.Content style={{ maxWidth: 450 }}>
                                 <AlertDialog.Title>Logout</AlertDialog.Title>
@@ -52,7 +52,7 @@ export default function Header() {
                                         </Button>
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action>
-                                        <Button variant="solid" color="red" onClick={() => {
+                                        <Button color="red" className="cursor-pointer" onClick={() => {
                                             logoutUser().then(function(result) {
                                                 if (result.status === 'success') {
                                                     setUser({id: 0, name: '', email: ''})
@@ -67,7 +67,7 @@ export default function Header() {
                             </AlertDialog.Content>
                         </AlertDialog.Root>
                     </Flex>
-                ) : <Button className='cursor-pointer' variant="outline" onClick={() => router.push('/auth/login')}>Login</Button>}
+                ) : <Button className='cursor-pointer' variant={"surface"} onClick={() => router.push('/auth/login')}>Login</Button>}
             </Flex>
         </div>
     )

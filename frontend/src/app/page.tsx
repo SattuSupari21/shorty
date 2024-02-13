@@ -6,9 +6,11 @@ import {RecoilRoot} from "recoil";
 
 export default function Home() {
   return (
-      <main className='h-screen flex flex-col'>
-          <Header />
-          <MainBody />
-      </main>
+          <main className='w-screen h-screen flex flex-col items-center'>
+              <Header/>
+              <div className="w-full h-full grid place-items-center">
+                  <MainBody/>
+              </div>
+          </main>
   );
 }
