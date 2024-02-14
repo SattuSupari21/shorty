@@ -1,10 +1,12 @@
 "use client";
 
-import { Container, Heading, Link, Table } from "@radix-ui/themes";
+import {Container, Heading, Link, Table, Text} from "@radix-ui/themes";
 import Header from "@/app/_components/Header";
 import { useRecoilValue } from "recoil";
 import { urlState } from "@/state/atoms/url";
 import { userState } from "@/state/atoms/user";
+import {urlLoading} from "@/state/selectors/isUrlLoading";
+import {Spinner} from "@/app/_components/Spinner";
 
 type Url = {
     id: number;
@@ -44,17 +46,16 @@ function RenderTable(username: string, urls: Url[]) {
 export default function () {
     const urls = useRecoilValue(urlState);
     const user = useRecoilValue(userState);
+    const isUrlLoading = useRecoilValue(urlLoading);
 
     return (
         <div className="w-screen h-screen flex flex-col items-center">
             <Header />
-            <div className="w-full max-w-[1024px]">
-                {urls.length > 0 ? (
-                    <div>{RenderTable(user.name, urls)}</div>
+            <div className="w-full h-full max-w-[1024px]">
+                {urls.urls.length > 0 ? (
+                    <div>{RenderTable(user.name, urls.urls)}</div>
                 ) : (
-                    <div>
-                        <Heading align={"center"} mt={"8"}>Sorry, no data found</Heading>
-                    </div>
+                    isUrlLoading ? <Spinner/> : <div><Heading align={"center"} mt={"8"}>Sorry, no data found</Heading></div>
                 )}
             </div>
         </div>

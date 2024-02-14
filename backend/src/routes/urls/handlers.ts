@@ -66,13 +66,13 @@ export async function createUrl(options: {longUrl: string, key: string}, jwt, se
         } else {
             shortUrl = getShortUrl(longUrl);
         }
-        // const res = await db.url.create({
-        //     data: {
-        //         shortUrl,
-        //         longUrl,
-        //         userId: profile.id,
-        //     }
-        // })
+        const res = await db.url.create({
+            data: {
+                shortUrl,
+                longUrl,
+                userId: profile.id,
+            }
+        })
         return Response.json({ status: 'success', shortUrl: 'http://localhost:3049/' + shortUrl});
     } catch (e) {
         console.log(`Error creating url : ${e}`)

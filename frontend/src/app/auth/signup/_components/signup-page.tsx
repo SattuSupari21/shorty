@@ -21,7 +21,7 @@ export default function SignupPage() {
         const res = signupUser({name, email, password});
         res.then(function(result) {
             if (result.status === 'success') {
-                setUserState({id: result.id, name: result.name, email: result.email})
+                setUserState({id: result.id, name: result.name, email: result.email, isLoading: false})
                 router.push('/')
             }
             setError(result.error);

@@ -6,7 +6,8 @@ export const userState = atom({
     default: {
         id: 0,
         name: '',
-        email: ''
+        email: '',
+        isLoading: true,
     }
 });
 

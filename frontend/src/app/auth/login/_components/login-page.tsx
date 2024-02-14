@@ -20,7 +20,7 @@ export default function LoginPage() {
         let res = loginUser({email, password})
         res.then(function(result) {
             if (result.status === 'success') {
-                setUser({id: result.id, name: result.name, email: result.email})
+                setUser({id: result.id, name: result.name, email: result.email, isLoading: false})
                 router.push('/')
             } else if (result.status === 'error') {
                 setError(result.error);

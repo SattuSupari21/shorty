@@ -1,38 +1,47 @@
 'use client'
 
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import {userState} from "@/state/atoms/user";
 import {AlertDialog, Button, Flex, Heading, Link} from "@radix-ui/themes";
 import {useEffect} from "react";
 import {getUserData, getUserUrls, logoutUser} from "@/app/actions";
 import {urlState} from "@/state/atoms/url";
 import {useRouter} from "next/navigation";
+import {userLoading} from "@/state/selectors/isUserLoading";
 
 export default function Header() {
     const router = useRouter();
     const [user, setUser] = useRecoilState(userState);
+    const isUserLoading = useRecoilValue(userLoading);
     const setUrls = useSetRecoilState(urlState);
 
     useEffect(() => {
         getUserData().then(function(result) {
-            setUser({id: result.id, name: result.name, email: result.email})
+            setUser({id: result.id, name: result.name, email: result.email, isLoading: false})
         })
     }, []);
 
     useEffect(() => {
         if (user.id) {
             getUserUrls(user.id).then(function(result) {
-                setUrls(result)
+                setUrls({urls: result, isLoading: false})
             })
         }
 
     }, [user.id]);
 
+    function RenderAuthButtons() {
+        if (isUserLoading)  return <p>Loading...</p>
+        return (
+            <Button className='cursor-pointer' variant={"surface"} onClick={() => router.push('/auth/login')}>Login</Button>
+        )
+    }
+
     return (
         <div className="w-full max-w-[1024px]">
             <Flex align={'center'} justify={'between'} mt={'2'} mx={'6'}>
                 <Heading><Link href={'/'} color={'purple'}>Shorty</Link></Heading>
-                {user.name ? (
+                {user.name && !isUserLoading ? (
                     <Flex align={'center'} gap={'4'}>
                         <Link href={"/user"}>My Account</Link>
                         <AlertDialog.Root>
@@ -55,7 +64,7 @@ export default function Header() {
                                         <Button color="red" className="cursor-pointer" onClick={() => {
                                             logoutUser().then(function(result) {
                                                 if (result.status === 'success') {
-                                                    setUser({id: 0, name: '', email: ''})
+                                                    setUser({id: 0, name: '', email: '', isLoading: false})
                                                     router.refresh()
                                                 }
                                             });
@@ -67,7 +76,7 @@ export default function Header() {
                             </AlertDialog.Content>
                         </AlertDialog.Root>
                     </Flex>
-                ) : <Button className='cursor-pointer' variant={"surface"} onClick={() => router.push('/auth/login')}>Login</Button>}
+                ) : <RenderAuthButtons/>}
             </Flex>
         </div>
     )
