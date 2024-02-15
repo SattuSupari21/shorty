@@ -37,7 +37,7 @@ export async function loginUser({ email, password }: { email: string, password: 
         return { status: 'error', error: "Password cannot be empty" }
     }
 
-    return await axios.post('http://localhost:3049/api/user/login', {
+    const { data } = await axios.post('http://localhost:3049/api/user/login', {
         email,
         password
     }, {
@@ -45,11 +45,12 @@ export async function loginUser({ email, password }: { email: string, password: 
             'Content-Type': 'multipart/form-data'
         },
         withCredentials: true,
-    }
-    ).then((res) => {
-        cookies().set('auth', res.data.token)
-        return res.data;
     });
+    if (data.status !== "error") {
+        cookies().set('auth', data.token)
+        return data;
+    }
+    return data;
 }
 
 export async function logoutUser() {
@@ -58,7 +59,7 @@ export async function logoutUser() {
 }
 
 export async function signupUser({ name, email, password }: { name: string, email: string, password: string }) {
-    let error = [];
+    /*let error = [];
     if (!email) {
         error.push("Email cannot be empty")
     }
@@ -68,7 +69,7 @@ export async function signupUser({ name, email, password }: { name: string, emai
     if (!password) {
         error.push("Password cannot be empty")
     }
-    if (error.length > 0) return { status: 'error', error };
+    if (error.length > 0) return { status: 'error', error };*/
 
     const { data } = await axios.post('http://localhost:3049/api/user/signup', {
         name,

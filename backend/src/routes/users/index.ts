@@ -9,10 +9,16 @@ const userRoutes = new Elysia({ prefix: '/user' })
         secret: 'super-secret'
     }))
     .use(cookie())
+    .onError(({ code, error }) => {
+        return Response.json({ status: 'error', error: error.toString() })
+    })
     .get('/', ({ jwt, cookie: { auth } }) => getUserData(jwt, auth))
     .post('/login', ({ body, jwt, cookie, setCookie }) => getUser(body, jwt, cookie, setCookie), {
         body: t.Object({
-            email: t.String({ format: "email" }),
+            email: t.String({
+                format: "email",
+                error: "Invalid Email!"
+            }),
             password: t.String()
         })
     })
@@ -23,7 +29,7 @@ const userRoutes = new Elysia({ prefix: '/user' })
                 error: "Name cannot be empty"
             }),
             email: t.String({
-                format: 'email',
+                format: "email",
                 error: "Invalid Email!"
             }),
             password: t.String({

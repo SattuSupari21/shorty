@@ -1,12 +1,13 @@
 "use client"
 
-import {Box, Button, Card, Flex, Heading, Link, Text, TextField} from "@radix-ui/themes";
-import {InputIcon} from "@radix-ui/react-icons";
-import {useState} from "react";
-import {signupUser} from "@/app/actions";
-import {useSetRecoilState} from "recoil";
-import {userState} from "@/state/atoms/user";
-import {useRouter} from "next/navigation";
+import { Box, Button, Card, Flex, Heading, Link, Text, TextField } from "@radix-ui/themes";
+import { InputIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
+import { signupUser } from "@/app/actions";
+import { useSetRecoilState } from "recoil";
+import { userState } from "@/state/atoms/user";
+import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -16,16 +17,14 @@ export default function SignupPage() {
     const [error, setError] = useState([]);
     const setUserState = useSetRecoilState(userState);
 
-    const handleSignup = (event: { preventDefault: () => void; }) => {
+    const handleSignup = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        const res = signupUser({name, email, password});
-        res.then(function(result) {
-            if (result.status === 'success') {
-                setUserState({id: result.id, name: result.name, email: result.email, isLoading: false})
-                router.push('/')
-            }
-            setError(result.error);
-        })
+        const result = await signupUser({ name, email, password });
+        if (result.status === 'success') {
+            setUserState({ id: result.id, name: result.name, email: result.email, isLoading: false })
+            router.push('/')
+        }
+        toast.error(result.error);
     }
 
     return (
@@ -63,9 +62,10 @@ export default function SignupPage() {
                     </TextField.Root>
                 </Flex>
                 {error && error.map(err => <Text align={'center'} color={'red'}>{err}</Text>)}
-                <Button onClick={handleSignup}>Sign up</Button>
+                <Button onClick={(e) => handleSignup(e)}>Sign up</Button>
                 <Text align={'right'} size={'2'}>Already have an account? <Link href={"/auth/login"}>Log in</Link></Text>
             </Flex>
+            <Toaster />
         </Card>
     );
 }

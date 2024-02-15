@@ -20,23 +20,23 @@ export async function getUser(options: { email: string, password: string }, jwt:
     httpOnly: boolean
 }) => void) | undefined) {
     try {
-        const {email, password} = options;
+        const { email, password } = options;
         const user = await db.user.findUnique({
             where: {
                 email
             }
         })
-        if (!user) return Response.json({status: 'error', error: 'Invalid email or password'})
+        if (!user) return Response.json({ status: 'error', error: 'Invalid email or password' })
         const isPasswordMatch = await Bun.password.verify(password, user.password)
-        if (!isPasswordMatch) return Response.json({status: 'error', error: 'Invalid email or password'})
+        if (!isPasswordMatch) return Response.json({ status: 'error', error: 'Invalid email or password' })
         if (setCookie) {
-            setCookie('auth', await jwt?.sign({id: user.id, name: user.name, email: user.email}), {
+            setCookie('auth', await jwt?.sign({ id: user.id, name: user.name, email: user.email }), {
                 httpOnly: false,
                 path: '/',
                 maxAge: 7 * 86400,
             })
         }
-        return Response.json({status: 'success', token: `${cookie?.auth}`, name: user.name, email: user.email})
+        return Response.json({ status: 'success', token: `${cookie?.auth}`, name: user.name, email: user.email })
     } catch (e) {
         console.log(`${e}`)
     }
@@ -44,13 +44,13 @@ export async function getUser(options: { email: string, password: string }, jwt:
 
 export async function createUser(options: { name: string, email: string, password: string }, jwt: { sign: any; verify?: (jwt?: string | undefined) => Promise<false | (Record<string, string | number> & JWTPayloadSpec)>; }) {
     try {
-        const {name, email, password} = options;
+        const { name, email, password } = options;
         const userExists = await db.user.findUnique({
             where: {
                 email
             }
         })
-        if (userExists)   return Response.json({status: 'error', error: ['Choose another email']})
+        if (userExists) return Response.json({ status: 'error', error: ['Choose another email'] })
 
         const bcryptHash = await Bun.password.hash(password, {
             algorithm: "bcrypt",
@@ -64,9 +64,9 @@ export async function createUser(options: { name: string, email: string, passwor
                 password: bcryptHash
             }
         })
-        const token = await jwt?.sign({id: user.id, name: user.name, email: user.email})
+        const token = await jwt?.sign({ id: user.id, name: user.name, email: user.email })
 
-        return Response.json({ status: 'success', token, name: user.name, email: user.email})
+        return Response.json({ status: 'success', token, name: user.name, email: user.email })
     } catch (e) {
         console.log(`Error creating url : ${e}`)
     }

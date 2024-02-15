@@ -53,7 +53,7 @@ export async function createUrl(options: { longUrl: string, key: string }, jwt, 
         const profile = await jwt.verify(auth)
         if (!profile) {
             set.status = 401
-            return Response.json({ status: 'Unauthorized' });
+            return Response.json({ status: 'error', error: 'Unauthorized' });
         }
         const { longUrl, key } = options;
         let shortUrl;
@@ -63,7 +63,7 @@ export async function createUrl(options: { longUrl: string, key: string }, jwt, 
                     shortUrl: key
                 }
             })
-            if (res) return Response.json({ status: 'failed', message: 'Key already exists! try a different one.' })
+            if (res) return Response.json({ status: 'error', error: 'Key already exists! try a different one.' })
             shortUrl = key;
         } else {
             shortUrl = getShortUrl(longUrl);

@@ -1,36 +1,25 @@
-import {Box, Button, Card, Container, Flex, Tabs, Text, TextField} from "@radix-ui/themes";
-import {Link1Icon} from "@radix-ui/react-icons";
-import {useEffect, useState} from "react";
-import {createShortUrl} from "@/app/actions";
+import { Box, Button, Card, Flex, Tabs, Text, TextField } from "@radix-ui/themes";
+import { Link1Icon } from "@radix-ui/react-icons";
+import { useEffect, useState } from "react";
+import { createShortUrl } from "@/app/actions";
 import MainBodyHeading from "@/app/_components/MainBodyHeading";
-import Features from "@/app/_components/FeaturesComponent";
 import FeaturesComponent from "@/app/_components/FeaturesComponent";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function MainBody() {
 
     const [longUrl, setLongUrl] = useState("");
     const [shortUrl, setShortUrl] = useState("");
     const [key, setKey] = useState("");
-    const [error, setError] = useState("");
 
-    const handleLongUrl = () => {
-        let res = createShortUrl(longUrl, key)
-        res.then(function(result) {
-            if (result.status === 'success') {
-                setShortUrl(result.shortUrl)
-            } else if (result.status === 'Unauthorized') {
-                setError("You need to log in first.")
-            } else if (result.status === 'failed') {
-                setError(result.message)
-            } else if (result.status === 'error') {
-                setError(result.error);
-            }
-        })
+    const handleLongUrl = async () => {
+        let result = await createShortUrl(longUrl, key);
+        if (result.status !== 'success') {
+            toast.error(result.error)
+            return;
+        }
+        setShortUrl(result.shortUrl);
     }
-
-    useEffect(() => {
-        setError("")
-    }, [shortUrl])
 
     return (
         <div className='w-full h-full max-w-[1024px] px-16 md:p-8 flex flex-col justify-evenly'>
@@ -58,12 +47,11 @@ export default function MainBody() {
                                             <Link1Icon height="16" width="16" />
                                         </TextField.Slot>
                                         <TextField.Input radius={'large'} size="3" type={'url'} placeholder="Enter long link here"
-                                                         onChange={(e) => setLongUrl(e.target.value)}
+                                            onChange={(e) => setLongUrl(e.target.value)}
                                         />
                                     </TextField.Root>
 
-                                    { shortUrl && <Text align={'center'} color={'green'}>{shortUrl}</Text> }
-                                    { error && <Text align={'center'} color={'red'}>{error}</Text> }
+                                    {shortUrl && <Text align={'center'} color={'green'}>{shortUrl}</Text>}
 
                                     <Button onClick={handleLongUrl}>Shorten URL</Button>
                                 </Flex>
@@ -84,8 +72,7 @@ export default function MainBody() {
                                     <Text>Custom alias (max 7 characters)</Text>
                                     <TextField.Input radius={'large'} size="3" type={'url'} placeholder="Enter custom key here " onChange={(e) => setKey(e.target.value)} />
 
-                                    { shortUrl && <Text align={'center'} color={'green'}>{shortUrl}</Text> }
-                                    { error && <Text align={'center'} color={'red'}>{error}</Text> }
+                                    {shortUrl && <Text align={'center'} color={'green'}>{shortUrl}</Text>}
 
                                     <Button onClick={handleLongUrl}>Shorten URL</Button>
                                 </Flex>
@@ -95,7 +82,9 @@ export default function MainBody() {
                 </Card>
             </div>
 
-            <FeaturesComponent/>
+            <FeaturesComponent />
+
+            <Toaster />
 
         </div>
     )
