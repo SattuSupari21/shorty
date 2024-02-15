@@ -1,4 +1,5 @@
 import db from "../../db"
+import { encoder } from "basex-encoder";
 
 function getShortUrl(url: string) {
     function extractDomain() {
@@ -23,13 +24,14 @@ function getShortUrl(url: string) {
     }
     const domain = extractDomain();
     const url_to_encode = getSubstringAfterDomain(domain)
+    const base62 = encoder("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
     if (typeof url_to_encode === "string") {
-        return btoa(url_to_encode).slice(0, 7);
+        return base62.encode(url_to_encode).slice(0, 7);
     }
 }
 
 // @ts-ignore
-export async function getUserUrls(options: {id: number}, jwt, auth) {
+export async function getUserUrls(options: { id: number }, jwt, auth) {
     try {
         const profile = await jwt.verify(auth)
         const { id } = options
@@ -46,14 +48,14 @@ export async function getUserUrls(options: {id: number}, jwt, auth) {
 }
 
 // @ts-ignore
-export async function createUrl(options: {longUrl: string, key: string}, jwt, set, auth) {
+export async function createUrl(options: { longUrl: string, key: string }, jwt, set, auth) {
     try {
         const profile = await jwt.verify(auth)
         if (!profile) {
             set.status = 401
-            return Response.json({ status: 'Unauthorized'});
+            return Response.json({ status: 'Unauthorized' });
         }
-        const {longUrl, key} = options;
+        const { longUrl, key } = options;
         let shortUrl;
         if (key) {
             const res = await db.url.findFirst({
@@ -61,7 +63,7 @@ export async function createUrl(options: {longUrl: string, key: string}, jwt, se
                     shortUrl: key
                 }
             })
-            if (res)   return Response.json({status: 'failed', message: 'Key already exists! try a different one.'})
+            if (res) return Response.json({ status: 'failed', message: 'Key already exists! try a different one.' })
             shortUrl = key;
         } else {
             shortUrl = getShortUrl(longUrl);
@@ -73,7 +75,7 @@ export async function createUrl(options: {longUrl: string, key: string}, jwt, se
                 userId: profile.id,
             }
         })
-        return Response.json({ status: 'success', shortUrl: 'http://localhost:3049/' + shortUrl});
+        return Response.json({ status: 'success', shortUrl: 'http://localhost:3049/' + shortUrl });
     } catch (e) {
         console.log(`Error creating url : ${e}`)
     }

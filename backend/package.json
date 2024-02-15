@@ -10,6 +10,7 @@
     "@elysiajs/cors": "^0.8.0",
     "@elysiajs/jwt": "^0.8.0",
     "@prisma/client": "5.8.1",
+    "basex-encoder": "^0.0.10",
     "elysia": "latest"
   },
   "devDependencies": {
