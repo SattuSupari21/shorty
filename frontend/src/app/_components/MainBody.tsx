@@ -1,6 +1,6 @@
 import { Box, Button, Card, Flex, Tabs, Text, TextField } from "@radix-ui/themes";
 import { Link1Icon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createShortUrl } from "@/app/actions";
 import MainBodyHeading from "@/app/_components/MainBodyHeading";
 import FeaturesComponent from "@/app/_components/FeaturesComponent";
@@ -22,7 +22,7 @@ export default function MainBody() {
     }
 
     return (
-        <div className='w-full h-full max-w-[1024px] px-16 md:p-8 flex flex-col justify-evenly'>
+        <div className='w-full h-full flex flex-col justify-evenly px-2'>
             <div className="grid place-items-center">
                 <MainBodyHeading />
             </div>
@@ -35,7 +35,7 @@ export default function MainBody() {
                             <Tabs.Trigger value="customUrl">Create custom URL</Tabs.Trigger>
                         </Tabs.List>
 
-                        <Box px="4" pt="5" pb="2">
+                        <Box px="2" pt="4" pb="2">
                             <Tabs.Content value="url">
                                 <Flex direction={'column'} gap={'2'}>
                                     <Text size={'6'} weight={'bold'}>Shorten a long link</Text>
