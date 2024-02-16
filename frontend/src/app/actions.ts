@@ -104,3 +104,15 @@ export async function createShortUrl(longUrl: string, key: string) {
     })
     return data;
 }
+
+export async function deleteShortUrl(id: number) {
+    const { data } = await axios.post('http://localhost:3049/api/url/deleteUrl', {
+        id
+    }, {
+        headers: {
+            Cookie: cookies().toString()
+        },
+        withCredentials: true
+    })
+    return data;
+}

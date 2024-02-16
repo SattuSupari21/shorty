@@ -25,6 +25,8 @@ function getShortUrl(url: string) {
     const domain = extractDomain();
     const url_to_encode = getSubstringAfterDomain(domain)
     const base62 = encoder("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    console.log(url_to_encode + " --- " + base62.encode(url_to_encode ? url_to_encode : ""));
+
     if (typeof url_to_encode === "string") {
         return base62.encode(url_to_encode).slice(0, 7);
     }
@@ -78,5 +80,26 @@ export async function createUrl(options: { longUrl: string, key: string }, jwt, 
         return Response.json({ status: 'success', shortUrl: 'http://localhost:3049/' + shortUrl });
     } catch (e) {
         console.log(`Error creating url : ${e}`)
+    }
+}
+
+// @ts-ignore
+export async function deleteUrl(options: { id: number }, jwt, set, auth) {
+    try {
+        const profile = jwt.verify(auth)
+        if (!profile) {
+            set.status = 401
+            return Response.json({ status: 'error', error: 'Unauthorized' });
+        }
+        const { id } = options;
+        await db.url.delete({
+            where: {
+                id,
+                userId: profile.id,
+            }
+        })
+        return Response.json({ status: 'success' });
+    } catch (e) {
+        console.log(`Error deleting url : ${e}`)
     }
 }

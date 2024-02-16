@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { createUrl, getUserUrls } from "./handlers";
+import { createUrl, getUserUrls, deleteUrl } from "./handlers";
 import cookie from "@elysiajs/cookie";
 import jwt from "@elysiajs/jwt";
 
@@ -28,6 +28,11 @@ const urlRoutes = new Elysia({ prefix: '/url' })
                 maxLength: 7,
                 error: "Max length should be 7 characters!"
             })
+        })
+    })
+    .post('/deleteUrl', ({ body, jwt, set, cookie: { auth } }) => deleteUrl(body, jwt, set, auth), {
+        body: t.Object({
+            id: t.Number()
         })
     })
 
