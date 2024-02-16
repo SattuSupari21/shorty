@@ -65,7 +65,7 @@ export default function Header() {
                                             logoutUser().then(function(result) {
                                                 if (result.status === 'success') {
                                                     setUser({ id: 0, name: '', email: '', isLoading: false })
-                                                    router.refresh()
+                                                    router.push('/')
                                                 }
                                             });
                                         }}>

@@ -24,11 +24,9 @@ function getShortUrl(url: string) {
     }
     const domain = extractDomain();
     const url_to_encode = getSubstringAfterDomain(domain)
-    const base62 = encoder("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-    console.log(url_to_encode + " --- " + base62.encode(url_to_encode ? url_to_encode : ""));
-
+    const base62 = encoder("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
     if (typeof url_to_encode === "string") {
-        return base62.encode(url_to_encode).slice(0, 7);
+        return base62.encode(url_to_encode).slice(-7);
     }
 }
 

@@ -9,6 +9,7 @@ import { userState } from "@/state/atoms/user";
 import { urlLoading } from "@/state/selectors/isUrlLoading";
 import { Spinner } from "@/app/_components/Spinner";
 import { deleteShortUrl, getUserUrls } from "../actions";
+import { userLoading } from "@/state/selectors/isUserLoading";
 
 type Url = {
     id: number;
@@ -21,6 +22,7 @@ export default function() {
     const [urls, setUrls] = useRecoilState(urlState);
     const user = useRecoilValue(userState);
     const isUrlLoading = useRecoilValue(urlLoading);
+    const isUserLoading = useRecoilValue(userLoading);
 
     async function handleDelete(id: number) {
         const res = await deleteShortUrl(id);
@@ -62,6 +64,10 @@ export default function() {
             </Container>
         );
     }
+
+    if (!user.email && !isUserLoading) return <div className="w-screen h-screen grid place-items-center text-2xl">
+        <div>Unauthorized! You must <Link href="/auth/login">Login</Link> first!</div>
+    </div>
 
     return (
         <div className="w-screen h-screen flex flex-col items-center">
