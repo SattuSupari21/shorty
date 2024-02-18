@@ -1,5 +1,5 @@
-import { Box, Button, Card, Flex, Tabs, Text, TextField } from "@radix-ui/themes";
-import { Link1Icon } from "@radix-ui/react-icons";
+import { Box, Button, Card, Flex, Tabs, Text, TextField, Link } from "@radix-ui/themes";
+import { CopyIcon, CrossCircledIcon, Link1Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { createShortUrl } from "@/app/actions";
 import MainBodyHeading from "@/app/_components/MainBodyHeading";
@@ -19,6 +19,7 @@ export default function MainBody() {
             return;
         }
         setShortUrl(result.shortUrl);
+        setLongUrl("");
     }
 
     return (
@@ -51,7 +52,23 @@ export default function MainBody() {
                                         />
                                     </TextField.Root>
 
-                                    {shortUrl && <Text align={'center'} color={'green'}>{shortUrl}</Text>}
+                                    {
+                                        shortUrl && <div className="flex gap-2 items-center justify-center">
+                                            <CrossCircledIcon className="w-4 h-4 cursor-pointer hover:text-zinc-500 active:text-zinc-700"
+                                                onClick={() => {
+                                                    setShortUrl("")
+                                                    setLongUrl("")
+                                                }}
+                                            />
+                                            <Link href={shortUrl} color={'green'} target="_blank" className="text-center">{shortUrl}</Link>
+                                            <CopyIcon className="w-4 h-4 cursor-pointer hover:text-zinc-500 active:text-zinc-700"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(shortUrl)
+                                                    toast.success("Link copied successfully!")
+                                                }}
+                                            />
+                                        </div>
+                                    }
 
                                     <Button onClick={handleLongUrl}>Shorten URL</Button>
                                 </Flex>
@@ -72,7 +89,23 @@ export default function MainBody() {
                                     <Text>Custom alias (max 7 characters)</Text>
                                     <TextField.Input radius={'large'} size="3" type={'url'} placeholder="Enter custom key here " onChange={(e) => setKey(e.target.value)} />
 
-                                    {shortUrl && <Text align={'center'} color={'green'}>{shortUrl}</Text>}
+                                    {
+                                        shortUrl && <div className="flex gap-2 items-center justify-center">
+                                            <CrossCircledIcon className="w-4 h-4 cursor-pointer hover:text-zinc-500 active:text-zinc-700"
+                                                onClick={() => {
+                                                    setShortUrl("")
+                                                    setLongUrl("")
+                                                }}
+                                            />
+                                            <Link href={shortUrl} color={'green'} target="_blank" className="text-center">{shortUrl}</Link>
+                                            <CopyIcon className="w-4 h-4 cursor-pointer hover:text-zinc-500 active:text-zinc-700"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(shortUrl)
+                                                    toast.success("Link copied successfully!")
+                                                }}
+                                            />
+                                        </div>
+                                    }
 
                                     <Button onClick={handleLongUrl}>Shorten URL</Button>
                                 </Flex>

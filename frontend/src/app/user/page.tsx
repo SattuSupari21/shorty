@@ -54,7 +54,7 @@ export default function() {
                                         <Link href={"http://localhost:3049/" + url.shortUrl} target="_blank">
                                             http://localhost:3049/{url.shortUrl}
                                         </Link>
-                                        <TrashIcon onClick={() => handleDelete(url.id)} className="w-6 h-6 cursor-pointer hover:text-zinc-500 active:text-zinc-700 invisible group-hover/link:visible" />
+                                        <TrashIcon onClick={() => handleDelete(url.id)} className="w-4 h-4 cursor-pointer hover:text-zinc-500 active:text-zinc-700 invisible group-hover/link:visible" />
                                     </div>
                                 </Table.Cell>
                             </Table.Row>
